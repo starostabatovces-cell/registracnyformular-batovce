@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registračný formulár - Obec Bátovce</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1581578017420-1c7a3f5f4d1f?auto=format&fit=crop&w=1950&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 60px auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      padding: 30px 40px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      color: #222;
+      font-size: 1.8rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .hidden { display: none; }
+
+    .actions {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    button {
+      background-color: #0056b3;
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #003d80;
+    }
+
+    .logo {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://www.batovce.sk/design/images/erb.svg?v=11" alt="Logo Bátovce" class="logo" />
+    <h1>Registračný formulár</h1>
+
+    <form action="https://formspree.io/f/mvgwwrrl" method="POST">
+      <label for="role">Som</label>
+      <select id="role" name="role" required>
+        <option value="">-- vyberte --</option>
+        <option value="remeselnik">Remeselník</option>
+        <option value="predajca">Predajca</option>
+      </select>
+
+      <!-- BLOK PRE PREDAJCU -->
+      <div id="vendorBlock" class="hidden">
+        <label>Meno a priezvisko</label>
+        <input type="text" name="meno" />
+
+        <label>Telefónne číslo</label>
+        <input type="tel" name="telefon" />
+
+        <label>Adresa</label>
+        <input type="text" name="adresa" />
+
+        <label>PSČ</label>
+        <input type="text" name="psc" />
+
+        <label>Dátum narodenia</label>
+        <input type="date" name="datum" />
+
+        <label>Email</label>
+        <input type="email" name="email" />
+
+        <label><input type="checkbox" id="zivnostnikPredajca" /> Som živnostník</label>
+        <div id="icoDicBlockPredajca" class="hidden">
+          <label>IČO</label>
+          <input type="text" name="ico" />
+          <label>DIČ</label>
+          <input type="text" name="dic" />
+        </div>
+
+        <label>Druh ponúkaného tovaru (max. 20 slov)</label>
+        <textarea name="druh_tovaru"></textarea>
+
+        <label>Požadujem od organizéra</label>
+        <textarea name="pozadujem"></textarea>
+
+        <label>Čo si donesiem (počet kusov, rozmery)</label>
+        <textarea name="donesie"></textarea>
+      </div>
+
+      <!-- BLOK PRE REMESELNÍKA -->
+      <div id="craftsmanBlock" class="hidden">
+        <label>Meno a priezvisko</label>
+        <input type="text" name="meno_r" />
+
+        <label>Telefónne číslo</label>
+        <input type="tel" name="telefon_r" />
+
+        <label>Adresa</label>
+        <input type="text" name="adresa_r" />
+
+        <label>PSČ</label>
+        <input type="text" name="psc_r" />
+
+        <label>Dátum narodenia</label>
+        <input type="date" name="datum_r" />
+
+        <label>Email</label>
+        <input type="email" name="email_r" />
+
+        <label><input type="checkbox" id="zivnostnikRemeselnik" /> Som živnostník</label>
+        <div id="icoDicBlockRemeselnik" class="hidden">
+          <label>IČO</label>
+          <input type="text" name="ico_r" />
+          <label>DIČ</label>
+          <input type="text" name="dic_r" />
+        </div>
+
+        <label>Aké remeslo vykonávam (max. 20 slov)</label>
+        <textarea name="remeslo"></textarea>
+
+        <label>Budete robiť ukážku ľudového remesla?</label>
+        <select name="ukazka" id="ukazka">
+          <option value="">-- vyberte --</option>
+          <option value="ano">Áno</option>
+          <option value="nie">Nie</option>
+        </select>
+
+        <label>Uveďte dôvod (ak áno alebo nie)</label>
+        <textarea name="dovod"></textarea>
+
+        <label>Požadujem od organizéra</label>
+        <textarea name="pozadujem_r"></textarea>
+
+        <label>Budem mať vlastný...</label>
+        <textarea name="vlastny"></textarea>
+
+        <label>Počet kusov a rozmery</label>
+        <textarea name="pocet"></textarea>
+      </div>
+
+      <label>Súhlasím, aby moje osobné údaje boli použité pre potreby obce Bátovce v rámci organizovania kultúrnych podujatí</label>
+      <select name="suhlas" required>
+        <option value="">-- vyberte --</option>
+        <option value="ano">Áno</option>
+        <option value="nie">Nie</option>
+      </select>
+
+      <label>Dátum</label>
+      <input type="date" name="datum_podpis" />
+
+      <label>Podpis</label>
+      <input type="text" name="podpis" placeholder="Vaše meno ako podpis" />
+
+      <div class="actions">
+        <button type="submit">Odoslať</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const role = document.getElementById('role');
+    const vendorBlock = document.getElementById('vendorBlock');
+    const craftsmanBlock = document.getElementById('craftsmanBlock');
+    const zivnostnikPredajca = document.getElementById('zivnostnikPredajca');
+    const icoDicBlockPredajca = document.getElementById('icoDicBlockPredajca');
+    const zivnostnikRemeselnik = document.getElementById('zivnostnikRemeselnik');
+    const icoDicBlockRemeselnik = document.getElementById('icoDicBlockRemeselnik');
+
+    role.addEventListener('change', () => {
+      if (role.value === 'predajca') {
+        vendorBlock.classList.remove('hidden');
+        craftsmanBlock.classList.add('hidden');
+      } else if (role.value === 'remeselnik') {
+        craftsmanBlock.classList.remove('hidden');
+        vendorBlock.classList.add('hidden');
+      } else {
+        vendorBlock.classList.add('hidden');
+        craftsmanBlock.classList.add('hidden');
+      }
+    });
+
+    zivnostnikPredajca.addEventListener('change', () => {
+      icoDicBlockPredajca.classList.toggle('hidden', !zivnostnikPredajca.checked);
+    });
+
+    zivnostnikRemeselnik.addEventListener('change', () => {
+      icoDicBlockRemeselnik.classList.toggle('hidden', !zivnostnikRemeselnik.checked);
+    });
+  </script>
+</body>
+</html>
