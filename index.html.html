@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+<html lang="sk">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Registračný formulár - Obec Bátovce</title>
+<meta content="Registračný formulár pre remeselníkov a predajcov - Obec Bátovce" name="description"/>
+<style>
+    :root{
+      --glass-bg: rgba(255,255,255,0.96);
+      --accent: #0b5ed7; /* accent kept */
+      --radius: 14px;
+      --max-width: 760px;
+      --gap: 14px;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:#111;
+      background-color:#0b0b0b;
+    }
+
+    /* Photographic dark background with artisanal / craft feeling (Unsplash) */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image: linear-gradient( to bottom right, rgba(0,0,0,0.35), rgba(0,0,0,0.45) ), url('https://images.unsplash.com/photo-1487695652027-48e475bfa86b?auto=format&fit=crop&w=2100&q=80');
+      background-size:cover;
+      background-position:center;
+      filter: grayscale(8%) contrast(1) saturate(0.9) brightness(0.6);
+      z-index:-2;
+    }
+
+    /* subtle vignette */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.0) 40%, rgba(0,0,0,0.48) 100%);
+      z-index:-1;
+    }
+
+    .page-wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      gap:20px;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+      background: var(--glass-bg);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow: 0 8px 30px rgba(2,8,23,0.45);
+      position:relative;
+      overflow:hidden;
+      margin: 24px;
+    }
+
+    /* Logo in corner */
+    .logo{
+      position:absolute;
+      top:18px;
+      left:18px;
+      width:96px;
+      height:auto;
+      border-radius:10px;
+      background:rgba(255,255,255,0.85);
+      padding:6px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .logo img{width:100%; height:auto; display:block;}
+
+    header h1{
+      margin:0 0 4px 0;
+      text-align:center;
+      font-size:1.6rem;
+      letter-spacing:0.2px;
+    }
+    header p{
+      margin:0 0 18px 0;
+      text-align:center;
+      color:#444;
+      font-size:0.95rem;
+    }
+
+    form{
+      display:block;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:var(--gap);
+    }
+
+    .full{ grid-column:1/-1; }
+
+    label{
+      font-size:0.9rem;
+      color:#222;
+      display:block;
+      margin-bottom:6px;
+      font-weight:600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid #d6d6d6;
+      border-radius:10px;
+      font-size:1rem;
+      background: #fff;
+      color:#111;
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+    }
+
+    input:focus, textarea:focus, select:focus{
+      box-shadow:0 6px 18px rgba(11,94,215,0.12);
+      border-color: rgba(11,94,215,0.8);
+    }
+
+    textarea{ min-height:84px; resize:vertical; }
+
+    .checkbox-inline{ display:flex; align-items:center; gap:8px; font-weight:600; }
+
+    .small-note{ font-size:0.84rem; color:#666; margin-top:6px; }
+
+    .actions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin-top:18px;
+      align-items:center;
+    }
+
+    button.primary{
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      padding:12px 20px;
+      border-radius:10px;
+      font-size:1rem;
+      cursor:pointer;
+      box-shadow: 0 8px 20px rgba(11,94,215,0.18);
+    }
+    button.primary:active{ transform:translateY(1px); }
+    button.ghost{
+      background:transparent;
+      border:1px solid #ccc;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+    }
+
+    /* Responsive */
+    @media (max-width:820px){
+      .grid{ grid-template-columns:1fr; }
+      .logo{ left:12px; top:12px; width:80px; }
+    }
+
+    @media (max-width:420px){
+      .container{ padding:20px; border-radius:12px; }
+      header h1{ font-size:1.25rem; }
+      .logo{ width:72px; }
+    }
+
+    /* helper */
+    .hidden{ display:none !important; }
+    .required-star{ color:#c0392b; margin-left:6px; font-weight:700; }
+
+    /* small print */
+    .disclaimer{ font-size:0.82rem; color:#555; margin-top:12px; }
+  
+    /* --- Aesthetic enhancements --- */
+    .hero{
+      background: rgba(255,255,255,0.92);
+      border-radius: var(--radius);
+      padding: 18px 18px;
+      margin: 6px 0 10px 0;
+      box-shadow: 0 10px 30px rgba(2,8,23,0.25);
+      border: 1px solid rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .hero h2{
+      margin: 0 0 6px 0;
+      font-size: 1.25rem;
+      letter-spacing: 0.2px;
+    }
+    .hero p{
+      margin: 0;
+      color: #333;
+      font-size: 0.98rem;
+    }
+
+    header h1{
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+    header p{
+      color: #2d3748;
+    }
+
+    .container{
+      backdrop-filter: blur(6px);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea{
+      background: linear-gradient(to bottom, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+      border-color: #dadde3;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset;
+    }
+    input:focus, textarea:focus, select:focus{
+      box-shadow: 0 8px 22px rgba(11,94,215,0.18);
+    }
+
+    button.primary{
+      background: linear-gradient(135deg, #0b5ed7, #3b82f6);
+      box-shadow: 0 10px 24px rgba(11,94,215,0.3);
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+    }
+    button.primary:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow: 0 14px 30px rgba(11,94,215,0.34);
+    }
+    button.ghost:hover{
+      border-color: #999;
+    }
+
+    /* Error state (when JS zvýrazní chyby) */
+    .error{
+      border: 2px solid #e74c3c !important;
+      box-shadow: 0 8px 16px rgba(231,76,60,0.15) !important;
+    }
+    
+    /* --- Hero redesign with logo, transparent glass effect and animations --- */
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px;
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(12px) saturate(1.5);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+      overflow: hidden;
+      animation: fadeInUp 1.6s ease both;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
+        url('https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=2000&q=80');
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      filter: brightness(0.7) saturate(1.1);
+    }
+    .hero-logo {
+      width: 110px;
+      height: auto;
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+    }
+    .hero h2 {
+      color: #fff;
+      font-size: 1.9rem;
+      font-weight: 800;
+      margin: 0 0 10px 0;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(15px);
+      animation: slideUp 1.2s ease 0.5s forwards;
+    }
+    .hero p {
+      color: #f3f3f3;
+      font-size: 1.05rem;
+      max-width: 600px;
+      line-height: 1.5;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(15px);
+      animation: slideUp 1.2s ease 0.9s forwards;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(15px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* --- Event info section --- */
+    .event-info {
+      background: rgba(255,255,255,0.85);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 20px 0 10px 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      text-align: center;
+      animation: fadeInUp 1.5s ease both;
+    }
+    .event-info h3 {
+      margin-top: 0;
+      font-size: 1.3rem;
+      color: #0b5ed7;
+    }
+    .event-info p {
+      margin: 4px 0;
+      color: #222;
+    }
+    /* --- GDPR info --- */
+    .gdpr-info {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: #333;
+      text-align: center;
+    }
+    .gdpr-info a {
+      color: #0b5ed7;
+      text-decoration: none;
+    }
+    /* --- Thank you message --- */
+    #thankYouMessage {
+      text-align: center;
+      animation: fadeInUp 1.5s ease both;
+    }
+    .thank-you-box {
+      background: rgba(255,255,255,0.92);
+      padding: 40px 30px;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .thank-you-box h2 {
+      color: #0b5ed7;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    .thank-you-box p {
+      color: #333;
+      font-size: 1rem;
+      margin-bottom: 24px;
+    }
+    /* --- Button animations --- */
+    button.primary {
+      transition: all 0.25s ease;
+    }
+    button.primary:hover {
+      transform: scale(1.04);
+      filter: brightness(1.05);
+    }
+    /* --- Mobile adjustments --- */
+    @media (max-width:600px){
+      .container{ padding: 20px; }
+      button.primary, button.ghost{
+        width: 100%;
+        font-size: 1.05rem;
+        padding: 14px;
+      }
+      .thank-you-box{ padding: 30px 20px; }
+    }
+    
+    /* --- Loading spinner --- */
+    #loadingSpinner {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease both;
+    }
+    .spinner-box {
+      text-align: center;
+    }
+    .spinner {
+      border: 4px solid rgba(11,94,215,0.2);
+      border-top: 4px solid #0b5ed7;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 14px auto;
+    }
+    #loadingSpinner p {
+      font-size: 1.1rem;
+      color: #0b5ed7;
+      font-weight: 600;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+<main aria-labelledby="form-title" class="container" role="main">
+<section class="hero"><img alt="Erb obce Bátovce" class="hero-logo" src="https://www.batovce.sk/design/images/erb.svg?v=11"/><h2>Pozývame vás na tradičný jarmok v Bátovciach!</h2><p>Zažite atmosféru plnú vôní, remesiel a tradícií. Prihláste sa ako remeselník alebo predajca a staňte sa súčasťou tohto krásneho dňa.</p></section><section class="event-info">
+<h3>🗓️ O podujatí</h3>
+<p>Pripravujeme ďalší ročník tradičného jarmoku v obci <strong>Bátovce</strong>!</p>
+<p>Sledujte naše stránky pre aktuálne informácie o termíne a programe.</p>
+<p>Tešíme sa na vás v atmosfére plnej hudby, vôní a remesiel.</p>
+</section><header>
+<h1 id="form-title">Registračný formulár — Obec Bátovce</h1>
+<p>Pre remeselníkov a predajcov — vyplňte prosím údaje nižšie</p>
+</header>
+<!-- NOTE: If you want submissions to go to your own email via Formspree, create a Formspree form and replace the action URL below with your form's endpoint. -->
+<form action="https://formspree.io/f/mvgwwrrl" id="registrationForm" method="POST" novalidate="">
+<!-- keep the original fields and logic intact; organized into a responsive grid -->
+<div class="grid">
+<div class="full">
+<label for="role">Som <span aria-hidden="true" class="required-star">*</span></label>
+<select aria-required="true" id="role" name="role" required="">
+<option value="">-- vyberte --</option>
+<option value="remeselnik">Remeselník</option>
+<option value="predajca">Predajca</option>
+</select>
+</div>
+<!-- VENDOR (PREDAJCA) BLOCK -->
+<div aria-hidden="true" class="hidden full" id="vendorBlock">
+<label for="meno">Meno a priezvisko<span class="required-star">*</span></label>
+<input aria-required="true" id="meno" name="meno" required="true" type="text"/>
+<label for="telefon">Telefónne číslo</label>
+<input id="telefon" name="telefon" type="tel"/>
+<label for="adresa">Adresa</label>
+<input id="adresa" name="adresa" type="text"/>
+<div class="grid">
+<div>
+<label for="psc">PSČ</label>
+<input id="psc" name="psc" type="text"/>
+</div>
+<div>
+<label for="datum">Dátum narodenia</label>
+<input id="datum" name="datum" type="date"/>
+</div>
+</div>
+<label for="email">Email<span class="required-star">*</span></label>
+<input aria-required="true" id="email" name="email" required="true" type="email"/>
+<div class="checkbox-inline" style="margin-top:8px;">
+<input id="zivnostnikPredajca" type="checkbox"/>
+<label for="zivnostnikPredajca" style="margin:0; font-weight:600;">Som živnostník</label>
+</div>
+<div aria-hidden="true" class="hidden" id="icoDicBlockPredajca" style="margin-top:8px;">
+<div class="grid">
+<div>
+<label for="ico">IČO</label>
+<input id="ico" name="ico" type="text"/>
+</div>
+<div>
+<label for="dic">DIČ</label>
+<input id="dic" name="dic" type="text"/>
+</div>
+</div>
+</div>
+<label for="druh_tovaru">Druh ponúkaného tovaru (max. 20 slov)</label>
+<textarea id="druh_tovaru" name="druh_tovaru"></textarea>
+<label for="pozadujem">Požadujem od organizéra</label>
+<textarea id="pozadujem" name="pozadujem"></textarea>
+<label for="donesie">Čo si donesiem (počet kusov, rozmery)</label>
+<textarea id="donesie" name="donesie"></textarea>
+</div>
+<!-- CRAFTSMAN (REMESLENIK) BLOCK -->
+<div aria-hidden="true" class="hidden full" id="craftsmanBlock">
+<label for="meno_r">Meno a priezvisko<span class="required-star">*</span></label>
+<input aria-required="true" id="meno_r" name="meno_r" required="true" type="text"/>
+<label for="telefon_r">Telefónne číslo</label>
+<input id="telefon_r" name="telefon_r" type="tel"/>
+<label for="adresa_r">Adresa</label>
+<input id="adresa_r" name="adresa_r" type="text"/>
+<div class="grid">
+<div>
+<label for="psc_r">PSČ</label>
+<input id="psc_r" name="psc_r" type="text"/>
+</div>
+<div>
+<label for="datum_r">Dátum narodenia</label>
+<input id="datum_r" name="datum_r" type="date"/>
+</div>
+</div>
+<label for="email_r">Email<span class="required-star">*</span></label>
+<input aria-required="true" id="email_r" name="email_r" required="true" type="email"/>
+<div class="checkbox-inline" style="margin-top:8px;">
+<input id="zivnostnikRemeselnik" type="checkbox"/>
+<label for="zivnostnikRemeselnik" style="margin:0; font-weight:600;">Som živnostník</label>
+</div>
+<div aria-hidden="true" class="hidden" id="icoDicBlockRemeselnik" style="margin-top:8px;">
+<div class="grid">
+<div>
+<label for="ico_r">IČO</label>
+<input id="ico_r" name="ico_r" type="text"/>
+</div>
+<div>
+<label for="dic_r">DIČ</label>
+<input id="dic_r" name="dic_r" type="text"/>
+</div>
+</div>
+</div>
+<label for="remeslo">Aké remeslo vykonávam (max. 20 slov)</label>
+<textarea id="remeslo" name="remeslo"></textarea>
+<label for="ukazka">Budete robiť ukážku ľudového remesla?</label>
+<select id="ukazka" name="ukazka">
+<option value="">-- vyberte --</option>
+<option value="ano">Áno</option>
+<option value="nie">Nie</option>
+</select>
+<label for="dovod">Uveďte dôvod (ak áno alebo nie)</label>
+<textarea id="dovod" name="dovod"></textarea>
+<label for="pozadujem_r">Požadujem od organizéra</label>
+<textarea id="pozadujem_r" name="pozadujem_r"></textarea>
+<label for="vlastny">Budem mať vlastný...</label>
+<textarea id="vlastny" name="vlastny"></textarea>
+<label for="pocet">Počet kusov a rozmery</label>
+<textarea id="pocet" name="pocet"></textarea>
+</div>
+<div class="full">
+<label for="suhlas">Súhlasím, aby moje osobné údaje boli použité pre potreby obce Bátovce v rámci organizovania kultúrnych podujatí <span class="required-star">*</span></label>
+<select aria-required="true" id="suhlas" name="suhlas" required="">
+<option value="">-- vyberte --</option>
+<option value="ano">Áno</option>
+<option value="nie">Nie</option>
+</select>
+</div>
+<div>
+<label for="datum_podpis">Dátum</label>
+<input id="datum_podpis" name="datum_podpis" type="date"/>
+</div>
+<div>
+<label for="podpis">Podpis</label>
+<input id="podpis" name="podpis" placeholder="Vaše meno ako podpis" type="text"/>
+</div>
+<div class="full">
+<p class="disclaimer">Údaje budú použité len na účely organizácie podujatí. Vyplnením formulára súhlasíte so spracovaním osobných údajov.</p>
+</div>
+<div class="full">
+<hr style="margin:20px 0;"/>
+<h3 style="margin-bottom:10px;">Cenník a výpočet poplatku</h3>
+<div id="priceList" style="display:flex;flex-direction:column;gap:8px;">
+<label>
+<input class="item" data-price="30" id="stand" type="checkbox"/>
+                Predajný stánok 3×3 m — 30 €/ks
+                <input id="standCount" min="1" style="width:60px; margin-left:8px;" type="number" value="1"/> ks
+              </label>
+<label><input class="item" data-price="20" type="checkbox"/> Motorové vozidlo so stánkom — 20 €</label>
+<label><input class="item" data-price="50" type="checkbox"/> Stánok s občerstvením s predajom alkoholu — 50 €</label>
+<label><input class="item" data-price="40" type="checkbox"/> Stánok s občerstvením bez predaja alkoholu — 40 €</label>
+<label><input class="item" data-price="10" type="checkbox"/> Poplatok za elektrinu / svietenie, pokladňa — 10 €</label>
+<label><input class="item" data-price="50" type="checkbox"/> Poplatok za elektrinu / el. panvice, grily... – podľa vl. podružného meradla predajcu — 50 €</label>
+<div style="margin-top:14px; font-weight:700;">
+                Celková suma: <span id="total">0</span> €
+              </div>
+<input id="totalInput" name="celkova_suma" type="hidden" value="0"/>
+</div>
+</div>
+<div class="full actions">
+<button class="primary" type="submit">Odoslať</button>
+<button class="ghost" onclick="resetVisibility()" type="reset">Vymazať</button>
+</div>
+</div>
+<!-- A small anti-spam honeypot -->
+<input name="_gotcha" style="display:none" type="text"/>
+<!-- Optional: customize Formspree subject -->
+<input name="_subject" type="hidden" value="Registračný formulár — Bátovce"/>
+<p class="gdpr-info">🔒 Viac o spracovaní osobných údajov nájdete na stránke obce: https://www.batovce.sk/.</p></form><div class="hidden" id="thankYouMessage">
+<div class="thank-you-box">
+<h2>Ďakujeme!</h2>
+<p>Vaša registrácia bola úspešne odoslaná.</p>
+<button class="primary" id="backToForm">Späť na formulár</button>
+</div>
+</div>
+</main>
+</div>
+<script>
+    // preserve original form logic (role toggle + živnostník blocks)
+    const role = document.getElementById('role');
+    const vendorBlock = document.getElementById('vendorBlock');
+    const craftsmanBlock = document.getElementById('craftsmanBlock');
+    const zivnostnikPredajca = document.getElementById('zivnostnikPredajca');
+    const icoDicBlockPredajca = document.getElementById('icoDicBlockPredajca');
+    const zivnostnikRemeselnik = document.getElementById('zivnostnikRemeselnik');
+    const icoDicBlockRemeselnik = document.getElementById('icoDicBlockRemeselnik');
+
+    function updateVisibility(){
+      if (role.value === 'predajca') {
+        vendorBlock.classList.remove('hidden');
+        vendorBlock.setAttribute('aria-hidden','false');
+        craftsmanBlock.classList.add('hidden');
+        craftsmanBlock.setAttribute('aria-hidden','true');
+      } else if (role.value === 'remeselnik') {
+        craftsmanBlock.classList.remove('hidden');
+        craftsmanBlock.setAttribute('aria-hidden','false');
+        vendorBlock.classList.add('hidden');
+        vendorBlock.setAttribute('aria-hidden','true');
+      } else {
+        vendorBlock.classList.add('hidden');
+        vendorBlock.setAttribute('aria-hidden','true');
+        craftsmanBlock.classList.add('hidden');
+        craftsmanBlock.setAttribute('aria-hidden','true');
+      }
+    }
+
+    role.addEventListener('change', updateVisibility);
+
+    zivnostnikPredajca && zivnostnikPredajca.addEventListener('change', () => {
+      icoDicBlockPredajca.classList.toggle('hidden', !zivnostnikPredajca.checked);
+      icoDicBlockPredajca.setAttribute('aria-hidden', !zivnostnikPredajca.checked);
+    });
+
+    zivnostnikRemeselnik && zivnostnikRemeselnik.addEventListener('change', () => {
+      icoDicBlockRemeselnik.classList.toggle('hidden', !zivnostnikRemeselnik.checked);
+      icoDicBlockRemeselnik.setAttribute('aria-hidden', !zivnostnikRemeselnik.checked);
+    });
+
+    function resetVisibility(){
+      // hide both blocks on reset
+      vendorBlock.classList.add('hidden'); vendorBlock.setAttribute('aria-hidden','true');
+      craftsmanBlock.classList.add('hidden'); craftsmanBlock.setAttribute('aria-hidden','true');
+      // uncheck živnostník boxes
+      if(zivnostnikPredajca) zivnostnikPredajca.checked = false;
+      if(zivnostnikRemeselnik) zivnostnikRemeselnik.checked = false;
+      if(icoDicBlockPredajca) icoDicBlockPredajca.classList.add('hidden');
+      if(icoDicBlockRemeselnik) icoDicBlockRemeselnik.classList.add('hidden');
+    }
+
+    
+    
+    // --- výpočet ceny ---
+    const items = document.querySelectorAll('.item');
+    const totalDisplay = document.getElementById('total');
+    const totalInput = document.getElementById('totalInput');
+    const stand = document.getElementById('stand');
+    const standCount = document.getElementById('standCount');
+
+    function calculateTotal(){
+      let total = 0;
+      items.forEach(i => {
+        if(i.checked && i.id !== 'stand') total += Number(i.dataset.price);
+      });
+
+      // ak je zaškrtnutý stánok, počítaj podľa počtu
+      if(stand.checked){
+        const count = Number(standCount.value || 1);
+        total += count * Number(stand.dataset.price);
+      }
+
+      totalDisplay.textContent = total.toFixed(2);
+      totalInput.value = total.toFixed(2);
+    }
+
+    items.forEach(i => i.addEventListener('change', calculateTotal));
+    standCount.addEventListener('input', calculateTotal);
+
+
+    // initialize visibility on page load
+    document.addEventListener('DOMContentLoaded', updateVisibility);
+  </script>
+<script>
+// --- vlastná validácia povinných polí ---
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+  const requiredFields = [
+    { id: 'meno', label: 'Meno a priezvisko (predajca)' },
+    { id: 'email', label: 'Email (predajca)' },
+    { id: 'meno_r', label: 'Meno a priezvisko (remeselník)' },
+    { id: 'email_r', label: 'Email (remeselník)' },
+    { id: 'suhlas', label: 'Súhlas so spracovaním údajov' }
+  ];
+
+  let missing = [];
+
+  requiredFields.forEach(field => {
+    const el = document.getElementById(field.id);
+    if (el && !el.closest('.hidden')) { // kontrolujeme len viditeľné polia
+      const val = el.value.trim();
+      if (!val) {
+        missing.push(field.label);
+        el.classList.add('error');
+      } else {
+        el.classList.remove('error');
+      }
+    }
+  });
+
+  if (missing.length > 0) {
+    e.preventDefault();
+    alert('Prosím, vyplňte nasledujúce povinné polia:\n- ' + missing.join('\n- '));
+  }
+});
+</script><div class="hidden" id="loadingSpinner">
+<div class="spinner-box">
+<div class="spinner"></div>
+<p>Odosiela sa...</p>
+</div>
+</div><script>
+// --- Validacia + Formspree odoslanie + spinner + dakovna sprava ---
+document.addEventListener('DOMContentLoaded', function(){
+  // Auto-fill today's date
+  const dateInput = document.getElementById('datum_podpis');
+  if (dateInput && !dateInput.value){
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+  }
+
+  const form = document.getElementById('registrationForm');
+  const thankYou = document.getElementById('thankYouMessage');
+  const spinner = document.getElementById('loadingSpinner');
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    // Validacia povinných polí
+    const requiredFields = [
+      { id: 'meno', label: 'Meno a priezvisko (predajca)' },
+      { id: 'email', label: 'Email (predajca)' },
+      { id: 'meno_r', label: 'Meno a priezvisko (remeselník)' },
+      { id: 'email_r', label: 'Email (remeselník)' },
+      { id: 'suhlas', label: 'Súhlas so spracovaním údajov' }
+    ];
+    let missing = [];
+
+    requiredFields.forEach(field => {
+      const el = document.getElementById(field.id);
+      if (el && !el.closest('.hidden')) {
+        const val = el.value.trim();
+        if (!val) {
+          missing.push(field.label);
+          el.classList.add('error');
+        } else {
+          el.classList.remove('error');
+        }
+      }
+    });
+
+    // Ak niečo chýba, neodosielaj
+    if (missing.length > 0) {
+      alert('Prosím, vyplňte nasledujúce povinné polia:\n- ' + missing.join('\n- '));
+      return;
+    }
+
+    // Ak všetko OK, zobraz spinner a odošli na Formspree
+    spinner.classList.remove('hidden');
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      spinner.classList.add('hidden');
+
+      if (response.ok) {
+        form.classList.add('hidden');
+        thankYou.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        alert('Odoslanie sa nepodarilo. Skúste to znova neskôr.');
+      }
+    } catch (error) {
+      spinner.classList.add('hidden');
+      alert('Vyskytla sa chyba pri odosielaní. Skúste to znova.');
+    }
+  });
+
+  // Späť na formulár
+  document.getElementById('backToForm').addEventListener('click', function(){
+    thankYou.classList.add('hidden');
+    form.classList.remove('hidden');
+    form.reset();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+</script></body>
+</html>
